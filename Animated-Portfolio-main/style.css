@@ -417,6 +417,10 @@ body.video-hover-active::after {
     opacity: 1;
 }
 
+body.video-hover-active {
+    overflow: hidden !important;
+}
+
 .project-vidbox{
     display: flex;
     align-items: center;

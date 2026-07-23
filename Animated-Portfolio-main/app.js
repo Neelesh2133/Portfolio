@@ -130,6 +130,16 @@ document.addEventListener("keydown", function(e) {
     }
 });
 
+// Disable mouse scroll when video hover preview is active or modal is open
+function preventScroll(e) {
+    if (document.body.classList.contains('video-hover-active') || (videoModal && videoModal.classList.contains('open'))) {
+        e.preventDefault();
+    }
+}
+
+window.addEventListener('wheel', preventScroll, { passive: false });
+window.addEventListener('touchmove', preventScroll, { passive: false });
+
 // Sidebar elements
 if (menu && sideBar) {
     menu.addEventListener("click", function(){
