@@ -18,8 +18,8 @@ projectVidboxes.forEach(function(vidbox) {
 
     if (!video) return;
 
-    // Hover play & focus state
-    vidbox.addEventListener("mouseenter", function() {
+    function activateHover() {
+        vidbox.classList.add("is-hovered");
         document.body.classList.add("video-hover-active");
         video.play().catch(function(err) {
             console.log("Autoplay prevented:", err);
@@ -27,13 +27,29 @@ projectVidboxes.forEach(function(vidbox) {
         if (hoverSign) {
             hoverSign.classList.add("active");
         }
-    });
+    }
 
-    vidbox.addEventListener("mouseleave", function() {
+    function deactivateHover() {
+        vidbox.classList.remove("is-hovered");
         document.body.classList.remove("video-hover-active");
         video.pause();
         if (hoverSign) {
             hoverSign.classList.remove("active");
+        }
+    }
+
+    vidbox.addEventListener("mouseenter", activateHover);
+    video.addEventListener("mouseenter", activateHover);
+
+    vidbox.addEventListener("mouseleave", function(e) {
+        if (e.relatedTarget !== video && !video.contains(e.relatedTarget)) {
+            deactivateHover();
+        }
+    });
+
+    video.addEventListener("mouseleave", function(e) {
+        if (e.relatedTarget !== vidbox && !vidbox.contains(e.relatedTarget)) {
+            deactivateHover();
         }
     });
 
