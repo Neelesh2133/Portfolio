@@ -413,11 +413,7 @@ body::after {
     z-index: 990;
 }
 
-body.video-hover-active::after {
-    opacity: 1;
-}
-
-body.video-hover-active {
+body.video-modal-open {
     overflow: hidden !important;
 }
 
@@ -429,12 +425,17 @@ body.video-hover-active {
     mix-blend-mode: normal;
     position: relative;
     cursor: pointer;
-    transition: z-index 0s ease;
     min-width: 400px;
     aspect-ratio: 16 / 9;
     border-radius: 20px;
     z-index: 1;
-    overflow: visible;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-vidbox:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px rgba(114, 161, 222, 0.6);
 }
 
 .project-vidbox video{
@@ -444,53 +445,12 @@ body.video-hover-active {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(114, 161, 222, 0.3);
     border: 2px solid rgba(114, 161, 222, 0.3);
     border-radius: 20px;
-    transition: transform 0.45s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.45s ease, border-color 0.45s ease, filter 0.45s ease;
+    transition: border-color 0.3s ease;
     background-color: #080020;
 }
 
-.project-vidbox.is-hovered,
-.project-vidbox:hover {
-    z-index: 10;
-}
-
-/* Direct Body Level Hover Video Overlay - Maximized Screen Size for Clear Text */
-.hover-video-overlay {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.95);
-    width: 95vw;
-    max-width: 1450px;
-    height: 90vh;
-    max-height: 90vh;
-    z-index: 99990;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20px;
-    box-shadow: 0 35px 100px rgba(0, 0, 0, 0.99), 0 0 65px rgba(114, 161, 222, 1), 0 0 30px rgba(255, 255, 255, 0.8);
-    border: 2px solid rgba(114, 161, 222, 1);
-    background-color: #02000a;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.hover-video-overlay.active {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-    pointer-events: auto;
-}
-
-.hover-video-overlay video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background-color: #000;
-    filter: contrast(1.12) brightness(1.05) saturate(1.05);
-    image-rendering: -webkit-optimize-contrast;
+.project-vidbox:hover video {
+    border-color: rgba(114, 161, 222, 0.9);
 }
 
 /* Video Lightbox Modal */

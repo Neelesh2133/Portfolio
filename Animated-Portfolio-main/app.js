@@ -3,17 +3,12 @@ const sideBar = document.querySelector('.sidebar');
 const menu = document.querySelector('.menu-icon');
 const closeIcon = document.querySelector('.close-icon');
 
-// Project Videos Hover & Modal logic
+// Project Videos Logic (Hover plays inline, Click opens enlarged modal)
 const projectVidboxes = document.querySelectorAll('.project-vidbox');
-const hoverVideoOverlay = document.getElementById('hoverVideoOverlay');
-const hoverVideoPlayer = document.getElementById('hoverVideoPlayer');
-
 const videoModal = document.getElementById('videoModal');
 const modalVideoPlayer = document.getElementById('modalVideoPlayer');
 const modalVideoTitle = document.getElementById('modalVideoTitle');
 const videoModalClose = document.querySelector('.video-modal-close');
-
-let currentActiveVidbox = null;
 
 projectVidboxes.forEach(function(vidbox) {
     const video = vidbox.querySelector('video');
@@ -23,87 +18,38 @@ projectVidboxes.forEach(function(vidbox) {
 
     if (!video) return;
 
-    function activateHover() {
-        currentActiveVidbox = vidbox;
-        vidbox.classList.add("is-hovered");
-        document.body.classList.add("video-hover-active");
-        
-        if (hoverVideoPlayer && hoverVideoOverlay) {
-            if (hoverVideoPlayer.src !== video.src) {
-                hoverVideoPlayer.src = video.src;
-            }
-            try {
-                hoverVideoPlayer.currentTime = video.currentTime || 0;
-            } catch(e) {}
-            hoverVideoOverlay.classList.add("active");
-            hoverVideoPlayer.play().catch(function(err) {
-                console.log("Autoplay prevented:", err);
-            });
-        }
-        
-        video.play().catch(() => {});
+    // Hover: Play inline video inside card without enlarging
+    vidbox.addEventListener("mouseenter", function() {
+        video.play().catch(function(err) {
+            console.log("Autoplay prevented:", err);
+        });
         if (hoverSign) {
             hoverSign.classList.add("active");
         }
-    }
+    });
 
-    function deactivateHover() {
-        if (currentActiveVidbox === vidbox) {
-            currentActiveVidbox = null;
-        }
-        vidbox.classList.remove("is-hovered");
-        document.body.classList.remove("video-hover-active");
-        
-        if (hoverVideoOverlay) {
-            hoverVideoOverlay.classList.remove("active");
-        }
-        if (hoverVideoPlayer) {
-            hoverVideoPlayer.pause();
-        }
+    vidbox.addEventListener("mouseleave", function() {
         video.pause();
         if (hoverSign) {
             hoverSign.classList.remove("active");
         }
-    }
-
-    vidbox.addEventListener("mouseenter", activateHover);
-
-    vidbox.addEventListener("mouseleave", function(e) {
-        if (e.relatedTarget && hoverVideoOverlay && hoverVideoOverlay.contains(e.relatedTarget)) {
-            return;
-        }
-        deactivateHover();
     });
 
-    // Click to open full resolution video modal
+    // CLICK: Open dead-centered enlarged video modal
     vidbox.addEventListener("click", function() {
         if (!videoModal || !modalVideoPlayer) return;
-        deactivateHover();
         modalVideoPlayer.src = video.src;
+        try {
+            modalVideoPlayer.currentTime = video.currentTime || 0;
+        } catch(e) {}
         if (projectTitle) {
             modalVideoTitle.textContent = projectTitle.textContent;
         }
         videoModal.classList.add("open");
+        document.body.classList.add("video-modal-open");
         modalVideoPlayer.play().catch(() => {});
     });
 });
-
-if (hoverVideoOverlay) {
-    hoverVideoOverlay.addEventListener("mouseleave", function() {
-        if (currentActiveVidbox) {
-            currentActiveVidbox.classList.remove("is-hovered");
-        }
-        document.body.classList.remove("video-hover-active");
-        hoverVideoOverlay.classList.remove("active");
-        if (hoverVideoPlayer) hoverVideoPlayer.pause();
-    });
-
-    hoverVideoOverlay.addEventListener("click", function() {
-        if (currentActiveVidbox) {
-            currentActiveVidbox.click();
-        }
-    });
-}
 
 // Modal close handlers
 if (videoModalClose) {
@@ -120,6 +66,7 @@ if (videoModal) {
 function closeModal() {
     if (!videoModal || !modalVideoPlayer) return;
     videoModal.classList.remove("open");
+    document.body.classList.remove("video-modal-open");
     modalVideoPlayer.pause();
     modalVideoPlayer.src = "";
 }
@@ -130,9 +77,9 @@ document.addEventListener("keydown", function(e) {
     }
 });
 
-// Disable mouse scroll when video hover preview is active or modal is open
+// Disable mouse scroll while enlarged video modal is open
 function preventScroll(e) {
-    if (document.body.classList.contains('video-hover-active') || (videoModal && videoModal.classList.contains('open'))) {
+    if (videoModal && videoModal.classList.contains('open')) {
         e.preventDefault();
     }
 }
