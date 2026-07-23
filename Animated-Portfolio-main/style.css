@@ -449,26 +449,25 @@ body.video-hover-active::after {
     z-index: 10;
 }
 
-/* Direct Body Level Hover Video Overlay - Guaranteed Viewport Centered */
+/* Direct Body Level Hover Video Overlay - Maximized Screen Size for Clear Text */
 .hover-video-overlay {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.92);
-    width: 85vw;
-    max-width: 1100px;
-    height: auto;
-    max-height: 82vh;
-    aspect-ratio: 16 / 9;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 95vw;
+    max-width: 1450px;
+    height: 90vh;
+    max-height: 90vh;
     z-index: 99990;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 20px;
-    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.98), 0 0 55px rgba(114, 161, 222, 0.95), 0 0 25px rgba(255, 255, 255, 0.7);
+    box-shadow: 0 35px 100px rgba(0, 0, 0, 0.99), 0 0 65px rgba(114, 161, 222, 1), 0 0 30px rgba(255, 255, 255, 0.8);
     border: 2px solid rgba(114, 161, 222, 1);
     background-color: #02000a;
     overflow: hidden;
@@ -484,9 +483,10 @@ body.video-hover-active::after {
 .hover-video-overlay video {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     background-color: #000;
-    filter: contrast(1.06) brightness(1.03);
+    filter: contrast(1.12) brightness(1.05) saturate(1.05);
+    image-rendering: -webkit-optimize-contrast;
 }
 
 /* Video Lightbox Modal */
@@ -496,8 +496,8 @@ body.video-hover-active::after {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.88);
-    backdrop-filter: blur(12px);
+    background-color: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(14px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -514,17 +514,19 @@ body.video-hover-active::after {
 
 .video-modal-content {
     position: relative;
-    width: 85%;
-    max-width: 1050px;
+    width: 95vw;
+    max-width: 1450px;
+    height: 92vh;
+    max-height: 92vh;
     background: #080020;
-    border: 2px solid rgba(114, 161, 222, 0.8);
+    border: 2px solid rgba(114, 161, 222, 0.9);
     border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 0 50px rgba(114, 161, 222, 0.5), 0 25px 60px rgba(0, 0, 0, 0.9);
+    padding: 20px 25px;
+    box-shadow: 0 0 60px rgba(114, 161, 222, 0.6), 0 30px 80px rgba(0, 0, 0, 0.95);
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    transform: scale(0.9);
+    gap: 12px;
+    transform: scale(0.92);
     transition: transform 0.3s ease;
 }
 
@@ -534,9 +536,9 @@ body.video-hover-active::after {
 
 .video-modal-close {
     position: absolute;
-    top: 15px;
+    top: 12px;
     right: 25px;
-    font-size: 35px;
+    font-size: 38px;
     color: #fff;
     cursor: pointer;
     transition: color 0.2s ease;
@@ -549,16 +551,19 @@ body.video-hover-active::after {
 
 #modalVideoTitle {
     margin: 0;
-    font-size: 22px;
+    font-size: 24px;
     color: #72a1de;
 }
 
 .video-modal-content video {
     width: 100%;
-    max-height: 72vh;
+    height: calc(100% - 40px);
     border-radius: 12px;
-    object-fit: contain;
+    object-fit: cover;
     background-color: #000;
+    filter: contrast(1.12) brightness(1.05) saturate(1.05);
+}
+
 }
 
 .project-info{
