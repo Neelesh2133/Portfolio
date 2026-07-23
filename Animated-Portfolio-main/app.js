@@ -1,36 +1,90 @@
-const video1 = document.getElementById('projectVideo1');
-const video2 = document.getElementById('projectVideo2');
-const video3 = document.getElementById('projectVideo3');
-
-// Sidebar elements //
+// Sidebar elements
 const sideBar = document.querySelector('.sidebar');
 const menu = document.querySelector('.menu-icon');
-const closeIcon = document.querySelector('.close-icon')
+const closeIcon = document.querySelector('.close-icon');
 
+// Project Videos Hover & Modal logic
+const projectVidboxes = document.querySelectorAll('.project-vidbox');
+const videoModal = document.getElementById('videoModal');
+const modalVideoPlayer = document.getElementById('modalVideoPlayer');
+const modalVideoTitle = document.getElementById('modalVideoTitle');
+const videoModalClose = document.querySelector('.video-modal-close');
 
-const hoverSign = document.querySelector('.hover-sign');
+projectVidboxes.forEach(function(vidbox) {
+    const video = vidbox.querySelector('video');
+    const hoverSign = vidbox.querySelector('.hover-sign');
+    const projectCard = vidbox.closest('.project-card');
+    const projectTitle = projectCard ? projectCard.querySelector('.project-info h1') : null;
 
-const videoList =[video1, video2, video3];
+    if (!video) return;
 
-videoList.forEach (function(video){
-    video.addEventListener("mouseover", function(){
-        video.play()
-        hoverSign.classList.add("active")
-    })
-    video.addEventListener("mouseout", function(){
-    video.pause();
-    hoverSign.classList.remove("active")
-})
-})
+    // Hover play & focus state
+    vidbox.addEventListener("mouseenter", function() {
+        document.body.classList.add("video-hover-active");
+        video.play().catch(function(err) {
+            console.log("Autoplay prevented:", err);
+        });
+        if (hoverSign) {
+            hoverSign.classList.add("active");
+        }
+    });
 
-// Sidebar elements //
-menu.addEventListener("click", function(){
-    sideBar.classList.remove("close-sidebar")
-    sideBar.classList.add("open-sidebar")
+    vidbox.addEventListener("mouseleave", function() {
+        document.body.classList.remove("video-hover-active");
+        video.pause();
+        if (hoverSign) {
+            hoverSign.classList.remove("active");
+        }
+    });
+
+    // Click to open full resolution video modal
+    vidbox.addEventListener("click", function() {
+        if (!videoModal || !modalVideoPlayer) return;
+        modalVideoPlayer.src = video.src;
+        if (projectTitle) {
+            modalVideoTitle.textContent = projectTitle.textContent;
+        }
+        videoModal.classList.add("open");
+        modalVideoPlayer.play().catch(() => {});
+    });
 });
 
-closeIcon.addEventListener("click", function(){
-    sideBar.classList.remove("open-sidebar");
-    sideBar.classList.add("close-sidebar");
-    
-})
+// Modal close handlers
+if (videoModalClose) {
+    videoModalClose.addEventListener("click", closeModal);
+}
+if (videoModal) {
+    videoModal.addEventListener("click", function(e) {
+        if (e.target === videoModal) {
+            closeModal();
+        }
+    });
+}
+
+function closeModal() {
+    if (!videoModal || !modalVideoPlayer) return;
+    videoModal.classList.remove("open");
+    modalVideoPlayer.pause();
+    modalVideoPlayer.src = "";
+}
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape" && videoModal && videoModal.classList.contains("open")) {
+        closeModal();
+    }
+});
+
+// Sidebar elements
+if (menu && sideBar) {
+    menu.addEventListener("click", function(){
+        sideBar.classList.remove("close-sidebar");
+        sideBar.classList.add("open-sidebar");
+    });
+}
+
+if (closeIcon && sideBar) {
+    closeIcon.addEventListener("click", function(){
+        sideBar.classList.remove("open-sidebar");
+        sideBar.classList.add("close-sidebar");
+    });
+}

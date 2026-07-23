@@ -135,6 +135,7 @@
             <div class="project-card">
                 <div class="project-vidbox autoBlur">
                     <video loop id="projectVideo2" src="videos/project2.mp4"></video>
+                    <div class="hover-sign"></div>
                 </div>
                 <div class="project-info fadein-left">
                     <h1>UrDoc — <span class="gradient">Deep Learning</span> X-Ray Classifier</h1>
@@ -147,6 +148,7 @@
             <div class="project-card">
                 <div class="project-vidbox autoBlur">
                     <video loop id="projectVideo3" src="videos/project3.mp4"></video>
+                    <div class="hover-sign"></div>
                 </div>
                 
                 <div class="project-info fadein-left">
@@ -235,8 +237,15 @@
                 <a href="https://github.com/Neelesh2133" target="_blank"><p><i class='bx bxl-github'></i></p></a>
                 <a href="https://linkedin.com/in/neelesh-krisna-cr" target="_blank"><p><i class='bx bxl-linkedin-square'></i></p></a>
             </div>
-        </section>
-        
+        <!-- Video Lightbox Modal -->
+        <div id="videoModal" class="video-modal">
+            <div class="video-modal-content">
+                <span class="video-modal-close">&times;</span>
+                <h3 id="modalVideoTitle">Project Preview</h3>
+                <video id="modalVideoPlayer" controls loop></video>
+            </div>
+        </div>
+
     </div>
     <script src="app.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
